@@ -1,0 +1,298 @@
+---
+title: "R Homework 4"
+author: "Margaret He"
+date: "May 6th, 2016"
+output: html_document
+---
+
+##Problem I
+
+* (a): Number of successes in 40 trials
+
+```{r, echo=FALSE}
+sim1 = sum(sample(c("Success","Failure"),40,prob = c(0.05,0.95),replace = TRUE) == "Success")
+
+sim1
+```
+  
+* (b): Histogram Plot
+
+```{r, echo=FALSE}
+sim1 = sum(sample(c("Success","Failure"),40,prob = c(0.05,0.95),replace = TRUE) == "Success")
+repeatsim = sapply(1:1000000, function(i){
+  sim1 = sum(sample(c("Success","Failure"),40,prob = c(0.05,0.95),replace = TRUE) == "Success")
+  return(sim1)
+})
+freq = names(table(repeatsim))[which.max(table(repeatsim))]
+
+hist(repeatsim, main = "Number of successes for 1000000 repetitions",ylab = "Frequency",xlab = "# Successes")
+```
+
+* (c): shape of histogram
+No the histogram is not symmetric; it's skewed right.
+
+* (d): most frequent value 
+The most frequently appearing value in (b) appears to be 3. Using R we find that it is: `r freq`.  
+
+##Problem II
+* (a): average (top) and standard deviation (bottom)
+
+```{r, echo=FALSE}
+avg = mean(repeatsim)
+sd = sd(repeatsim)
+avg
+sd
+```
+* (b): probability that all students remembered their hw
+
+```{r, echo=FALSE}
+allrem = mean(repeatsim == 0)
+allrem
+```
+
+* (c): probability that at least 2 students forgot their hw
+
+```{r, echo=FALSE}
+twoforget = mean(repeatsim >= 2)
+twoforget
+```
+
+
+* (d): median number of students who forgot their hw
+
+```{r, echo=FALSE}
+the.med = median(glasses);
+the.med
+```
+
+
+##Problem III
+
+* (a): Histogram of population, true mean (top), and true variance (bottom)
+
+```{r, echo=FALSE}
+lynx = as.numeric(lynx)
+hist(lynx, main = "Lynx",xlab = "Population")
+avg = mean(lynx)
+avg
+the.var = var(lynx)
+the.var
+```
+
+* (b): Average with sample size n = 10
+
+```{r, echo=FALSE}
+lynx = as.numeric(lynx)
+index = sample(1:length(lynx), 10, replace = FALSE)
+new.sample = lynx[index]
+avg = mean(new.sample)
+avg
+```
+
+
+* (c): Mean (top) and Standard Deviation (Bottom) of vector of 1000000 means (multiple simulations of part b)
+
+```{r, echo=FALSE}
+lynx = as.numeric(lynx)
+lynx.function = sapply(1:1000000, function(i){
+  index = sample(1:length(lynx), 10, replace = FALSE)
+  new.sample = lynx[index]
+  avg1 = mean(new.sample)
+  return(avg1)
+  })
+
+sig = sd(lynx)
+xbar = mean(lynx.function)
+xbar
+sample.sd = sd(lynx.function)
+sample.sd
+```
+
+* (d): Differences in mean and standard deviation in parts (a) and (c)
+
+```{r, echo=FALSE}
+mean.diff = abs(avg-xbar)
+sd.diff = abs(sig-sample.sd)
+```
+
+The mean of (a) and (c) are very close to each other; they differ by only `r mean.diff`. Their standard deviations showed a difference of `r sd.diff`.   
+
+
+##Problem IV
+
+* (a): Histogram from III (c)
+
+```{r, echo=FALSE}
+hist((lynx.function), main = "Distribution of means", n=40,xlab = "Average")
+```
+
+It is less skewed than the population distribution.
+
+
+* (b): sample mean (top) and standard deviation (bottom) from a sample of 50 
+
+```{r, echo = FALSE}
+mean50 = mean(sample(lynx,50,replace = FALSE))
+mean50
+sd50 = sd(sample(lynx,50,replace = FALSE))
+sd50
+```
+
+* (c): mean (top) and standard deviation (bottom) of 1000000 simulations' means
+
+```{r, echo = FALSE}
+mean.of.means = sapply(1:1000000,function(i){
+  simmean = mean(sample(lynx,50,replace = FALSE))
+  return(simmean)
+})
+finalmean = mean(mean.of.means)
+finalmean
+finalsd = sd(mean.of.means)
+finalsd
+```
+The mean in III(c) stayed about the same, while the standard devation decreased.
+
+* (d): Histogram of the vector in (c)
+
+```{r, echo = FALSE}
+hist(mean.of.means, main = "Mean Distribution, n = 50",xlab = "Average")
+```
+The shape is more symmetric now.
+
+
+*******
+#Code Appendix
+  
+```
+##Problem I
+
+* (a): Number of successes in 40 trials
+
+sim1 = sum(sample(c("Success","Failure"),40,prob = c(0.05,0.95),replace = TRUE) == "Success")
+
+sim1
+
+* (b): Histogram Plot
+
+sim1 = sum(sample(c("Success","Failure"),40,prob = c(0.05,0.95),replace = TRUE) == "Success")
+repeatsim = sapply(1:1000000, function(i){
+  sim1 = sum(sample(c("Success","Failure"),40,prob = c(0.05,0.95),replace = TRUE) == "Success")
+  return(sim1)
+})
+freq = names(table(repeatsim))[which.max(table(repeatsim))]
+
+hist(repeatsim, main = "Number of successes for 1000000 repetitions",ylab = "Frequency",xlab = "# Successes")
+
+* (c): shape of histogram
+No the histogram is not symmetric; it's skewed right.
+
+* (d): most frequent value 
+The most frequently appearing value in (b) appears to be 3. Using R we find that it is: `r freq`.  
+
+##Problem II
+* (a): average (top) and standard deviation (bottom)
+
+avg = mean(repeatsim)
+sd = sd(repeatsim)
+avg
+sd
+
+* (b): probability that all students remembered their hw
+
+allrem = mean(repeatsim == 0)
+allrem
+
+* (c): probability that at least 2 students forgot their hw
+
+twoforget = mean(repeatsim >= 2)
+twoforget
+
+
+* (d): median number of students who forgot their hw
+
+med = median(repeatsim)
+med
+
+
+##Problem III
+
+* (a): Histogram of population, true mean (top), and true variance (bottom)
+
+lynx = as.numeric(lynx)
+hist(lynx, main = "Lynx",xlab = "Population")
+avg = mean(lynx)
+avg
+the.var = var(lynx)
+the.var
+
+
+* (b): Average with sample size n = 10
+
+lynx = as.numeric(lynx)
+index = sample(1:length(lynx), 10, replace = FALSE)
+new.sample = lynx[index]
+avg = mean(new.sample)
+avg
+
+
+* (c): Mean (top) and Standard Deviation (Bottom) of vector of 1000000 means (multiple simulations of part b)
+
+lynx = as.numeric(lynx)
+lynx.function = sapply(1:1000000, function(i){
+  index = sample(1:length(lynx), 10, replace = FALSE)
+  new.sample = lynx[index]
+  avg1 = mean(new.sample)
+  return(avg1)
+  })
+
+sig = sd(lynx)
+xbar = mean(lynx.function)
+xbar
+sample.sd = sd(lynx.function)
+sample.sd
+
+
+* (d): Differences in mean and standard deviation in parts (a) and (c)
+
+mean.diff = abs(avg-xbar)
+sd.diff = abs(sig-sample.sd)
+
+The mean of (a) and (c) are very close to each other; they differ by only `r mean.diff`. Their standard deviations showed a difference of `r sd.diff`.   
+
+
+##Problem IV
+
+* (a): Histogram from III (c)
+
+hist((lynx.function), main = "Distribution of means", n=40,xlab = "Average")
+
+It is less skewed than the population distribution.
+
+
+* (b): sample mean (top) and standard deviation (bottom) from a sample of 50 
+
+mean50 = mean(sample(lynx,50,replace = FALSE))
+mean50
+sd50 = sd(sample(lynx,50,replace = FALSE))
+sd50
+
+* (c): mean (top) and standard deviation (bottom) of 1000000 simulations' means
+
+mean.of.means = sapply(1:1000000,function(i){
+  simmean = mean(sample(lynx,50,replace = FALSE))
+  return(simmean)
+})
+finalmean = mean(mean.of.means)
+finalmean
+finalsd = sd(mean.of.means)
+finalsd
+
+The mean in III(c) stayed about the same, while the standard devation decreased.
+
+* (d): Histogram of the vector in (c)
+
+hist(mean.of.means, main = "Mean Distribution, n = 50",xlab = "Average")
+
+The shape is more symmetric now.
+
+```

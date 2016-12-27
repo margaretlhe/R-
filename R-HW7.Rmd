@@ -1,0 +1,130 @@
+---
+title: "R-HW 7"
+author: "Margaret He"
+date: "June 1, 2016"
+output: html_document
+---
+
+```{r,echo = FALSE}
+crime <- read.csv("~/CollegeHW/STA 32/HW 7/crime.csv")
+```
+
+## Problem I
+
+* (a): Scatter Plot of crime rates, dependent on
+percentage of people with high school diplomas 
+
+```{r,echo = FALSE}
+the.model = lm(rate ~ dip, data = crime)
+plot(crime$dip,crime$rate,xlab = "Dip", ylab = "Rate", main = "Rate vs Dip",pch = 19, col = "purple")
+```
+
+* (b): Calculate and plot estimated regression line
+
+```{r,echo = FALSE}
+plot(crime$dip,crime$rate,xlab = "Dip", ylab = "Rate", main = "Rate vs Dip",pch = 19, col = "purple")
+abline(the.model,lwd = 2)
+```
+
+* (c): Slope and Intercept Interpretation
+
+The regression line displays a negative slope, showing that there is a negative correlation between percentage of individuals in the county with at least a high school dipolma, and percentage of crime rates in those counties. The plot shows that the lower the percentage of people with high school diplomas, the higher the crime rate in that area. The y-intercept agrees with this because it shows that when the percentage of crime rate is the lowest, or 0, the percentage of people with high school dipolomas is the highest. 
+
+* (d): Outlier Analysis
+
+Yes there appears to be several outiers; they are located at coordinates, with the format (X,Y), at (79, 3805) and at (78, 14016). 
+
+
+## Problem II
+
+* (a): QQ Plot and Distribution Analysis 
+
+```{r,echo = FALSE}
+hist(the.model$residuals,main = "Residual Distribution", xlab = "Errors/Residuals")
+qqnorm(the.model$residuals)
+qqline(the.model$residuals)
+```
+
+It appears that the residuals are slightly skewed right because the mean is greater than the median.
+
+* (b): Plot of errors vs. fitted values 
+```{r,echo = FALSE}
+plot(the.model$fitted.values,the.model$residuals,xlab = "Fitted Values",ylab = "errors",main = "Checking whether the variance of errors is constant")
+
+```
+
+It appears that the variance of the errors is constant because the residuals are scattered randomly around zero. 
+
+
+
+* (c): Interpretation of 95% Confidence interval of Slope
+```{r,echo = FALSE}
+confint(the.model,level = 0.95)
+```
+We are 95% confident that a 1% increase in percentage of people with high school diplomas caused the average slope to decrease by between (253, 288).
+
+* (d): Conclusion 
+
+The interval in (c) does not suggest a sigificant linear relationship because when we look at the 95% confidence interval the correlation coefficient is not significantly close to either -1 or 1.
+
+
+*******
+
+#Code Appendix
+
+```
+
+crime <- read.csv("~/CollegeHW/STA 32/HW 7/crime.csv")
+
+## Problem I
+
+* (a): Scatter Plot of crime rates, dependent on
+percentage of people with high school diplomas 
+
+the.model = lm(rate ~ dip, data = crime)
+plot(crime$dip,crime$rate,xlab = "Dip", ylab = "Rate", main = "Rate vs Dip",pch = 19, col = "purple")
+
+* (b): Calculate and plot estimated regression line
+
+
+plot(crime$dip,crime$rate,xlab = "Dip", ylab = "Rate", main = "Rate vs Dip",pch = 19, col = "purple")
+abline(the.model,lwd = 2)
+
+* (c): Slope and Intercept Interpretation
+
+The regression line displays a negative slope, showing that there is a negative correlation between percentage of individuals in the county with at least a high school dipolma, and percentage of crime rates in those counties. The plot shows that the lower the percentage of people with high school diplomas, the higher the crime rate in that area. The y-intercept agrees with this because it shows that when the percentage of crime rate is the lowest, or 0, the percentage of people with high school dipolomas is the highest. 
+
+* (d): Outlier Analysis
+
+Yes there appears to be several outiers; they are located at coordinates, with the format (X,Y), at (79, 3805) and at (78, 14016). 
+
+
+## Problem II
+
+* (a): QQ Plot and Distribution Analysis 
+
+hist(the.model$residuals,main = "Residual Distribution", xlab = "Errors/Residuals")
+qqnorm(the.model$residuals)
+qqline(the.model$residuals)
+
+It appears that the residuals are slightly skewed right because the mean is greater than the median.
+
+* (b): Plot of errors vs. fitted values 
+
+plot(the.model$fitted.values,the.model$residuals,xlab = "Fitted Values",ylab = "errors",main = "Checking whether the variance of errors is constant")
+
+
+It appears that the variance of the errors is constant because the residuals are scattered randomly around zero
+
+
+* (c): Interpretation of 95% Confidence interval of Slope
+
+confint(the.model,level = 0.95)
+
+We are 95% confident that a 1% increase in percentage of people with high school diplomas caused the average slope to decrease by between (253, 288).
+
+* (d): Conclusion 
+
+The interval in (c) suggests a sigificant linear relationship because when we look at the 95% confidence interval the correlation coefficient is in a range not containing 0.
+
+```

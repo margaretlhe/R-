@@ -1,0 +1,487 @@
+---
+title: "R-HW2"
+author: "Margaret He"
+output: html_document
+---
+
+```{r, echo = FALSE}
+ErinsFitbit <- read.csv("~/CollegeHW/STA 32/HW 1/ErinsFitbit.csv")
+```
+
+## Problem I
+
+* (a): Number of days where the total steps were > 10,000
+
+```{r, echo = FALSE}
+num.days = length(ErinsFitbit$Day[ErinsFitbit$Steps > 10000])
+num.days
+```
+
+* (b): Average number of steps taken when total sleep was < 7 hours
+
+```{r, echo = FALSE}
+num.steps = length(ErinsFitbit$Steps[ErinsFitbit$Sleep < 7])
+sum.steps = sum(ErinsFitbit$Steps[ErinsFitbit$Sleep < 7])
+avg.steps = sum.steps/num.steps
+avg.steps
+```
+
+* (c): Number of days where the total distance walked was > 5 miles
+
+```{r, echo = FALSE}
+num.days = length(ErinsFitbit$Day[ErinsFitbit$Miles > 5])
+num.days
+```
+
+* (d): Average number of miles where sleep was > 8 hours
+
+```{r, echo = FALSE}
+num.miles = length(ErinsFitbit$Miles[ErinsFitbit$Sleep > 8])
+sum.miles = sum(ErinsFitbit$Miles[ErinsFitbit$Sleep > 8])
+avg.miles = sum.miles/num.miles
+avg.miles
+```
+
+
+## Problem II
+
+* (a): Standard Deviation for vector X = 1:100 (of Miles)
+
+```{r, echo = FALSE}
+calc.sd = function(i){
+  X = ErinsFitbit$Miles
+  Xbar = mean(X)
+  s = sd(X)
+  vector = (X - Xbar)/c(1,100)*s
+  std = sd(vector)
+  return(std)
+}
+calc.sd(1:10)
+```
+
+
+* (b): Lower and upper boundaries of the vector X = 1:100
+```{r, echo = FALSE}
+
+```
+lower:
+
+```{r, echo = FALSE}
+# find lower boundary
+find.lower = function(i){
+  X = ErinsFitbit$Miles
+  Xbar = mean(X)
+  s = sd(X)
+  lower.bound = Xbar-2*s
+  return(lower.bound)
+}
+find.lower(1:100)
+```
+
+  upper:  
+```{r, echo = FALSE}
+find.upper= function(i){
+  X = ErinsFitbit$Miles
+  Xbar = mean(X)
+  s = sd(X)
+  upper.bound = Xbar+2*s
+  return(upper.bound)
+}
+find.upper(1:100)
+```
+
+* (c): Trimmed mean (after removing observations more than 3 standard deviations from the mean)
+
+```{r, echo = FALSE}
+calc.mean = function(i){
+  X = ErinsFitbit$Miles
+  Xbar = mean(X)
+  s = sd(X)
+  trimmed.mean = mean(X, trim = 3*s)  # remove certain elements from vector 
+   return(trimmed.mean)
+}
+calc.mean(c(1:100,200,300))
+```
+
+
+## Problem III
+
+* (a): Probability of flipping a head (based on 20 flips)
+
+```{r, echo = FALSE}
+sim.heads = sample(c(1,0),20, replace = TRUE)
+head.prob = sum(sim.heads == 1)/length(sim.heads)
+head.prob
+```
+
+* (b): Probabilities for n = 10,100,1000, 10000, 100000
+
+```{r, echo = FALSE}
+```
+
+Probability of flipping a head for n = 10 simulations:
+```{r, echo = FALSE}
+sim10 = sapply(1:10, function(n){
+  sim.heads = sample(c(1,0),n, replace = TRUE)
+  prob.head = sum(sim.heads == 1)/length(sim.heads)
+  return(prob.head)
+})
+prob10 = sum(sim10)/10
+prob10
+```
+
+Probability of flipping a head for n = 100 simulations:
+```{r, echo = FALSE}
+sim100 = sapply(1:100, function(n){
+  sim.heads = sample(c(1,0),n, replace = TRUE)
+  prob.head = sum(sim.heads == 1)/length(sim.heads)
+  return(prob.head)
+})
+prob100 = sum(sim100)/100
+prob100
+```
+
+Probability of flipping a head for n = 1000 simulations:
+```{r, echo = FALSE}
+sim1000 = sapply(1:1000, function(n){
+  sim.heads = sample(c(1,0),n, replace = TRUE)
+  prob.head = sum(sim.heads == 1)/length(sim.heads)
+  return(prob.head)
+})
+prob1000 = sum(sim1000)/1000
+prob1000
+```
+
+Probability of flipping a head for n = 10000 simulations:
+```{r, echo = FALSE}
+sim10000 = sapply(1:10000, function(n){
+  sim.heads = sample(c(1,0),n, replace = TRUE)
+  prob.head = sum(sim.heads == 1)/length(sim.heads)
+  return(prob.head)
+})
+prob10000 = sum(sim10000)/10000
+prob10000
+```
+
+Probability of flipping a head for n = 100000 simulations:
+```{r, echo = FALSE}
+sim100000 = sapply(1:100000, function(n){
+  sim.heads = sample(c(1,0),n, replace = TRUE)
+  prob.head = sum(sim.heads == 1)/length(sim.heads)
+  return(prob.head)
+})
+prob100000 = sum(sim100000)/100000
+prob100000
+```
+
+* (c): Calculated error of coin flip simulation done in part (c)
+
+```{r, echo = FALSE}
+```
+
+Error for 10 simulations:
+```{r, echo = FALSE}
+error10 = abs(prob10-0.50)
+error10
+```
+
+Error for 100 simulations:
+```{r, echo = FALSE}
+error100 = abs(prob100-0.50)
+error100
+```
+Error for 1000 simulations:
+```{r, echo = FALSE}
+error1000 = abs(prob1000-0.50)
+error1000
+```
+
+Error for 10000 simulations:
+```{r, echo = FALSE}
+error10000 = abs(prob10000-0.50)
+error10000
+```
+
+Error for 100000 simulations:
+```{r, echo = FALSE}
+error100000 = abs(prob100000-0.50)
+error100000
+```
+
+* (d): 
+As n increases, the error appears to decrease because the difference between the statistic and the parameter decreases. The result of performing the same experiment on a large number of times yields results that are closer to the expected value, thus lowering the error.
+
+
+## Problem IV
+
+```{r, echo = FALSE}
+values = as.character(1:7)
+```    
+
+* (a): Draw from a vector with 7 values (without replacement)
+
+```{r, echo = FALSE}
+one.draw = sample(values,7,replace = F)
+one.draw
+```
+
+* (b): Number of orderings beginning with '1' in 100000 simulations 
+
+```{r, echo = FALSE}
+sim.draws = sapply(1:100000, function(i){
+  one.draw = sample(values,7,replace = F)
+  num.1starts = ifelse(one.draw[1] == "1", TRUE, FALSE)
+  return(num.1starts)  
+})
+num.orderings = sum(sim.draws == "TRUE")
+num.orderings
+```
+
+* (c): Probability that a random ordering started with a 3 and ended with a 7
+
+```{r, echo = FALSE}
+sim.draws = sapply(1:100000, function(i){
+  one.draw = sample(values,7,replace = F)
+  num.orderings = ifelse(one.draw[1] == "3" & one.draw[7] == "7", TRUE, FALSE)
+  return(num.orderings)  
+})
+prob.true = sum(sim.draws == "TRUE")/(length (sim.draws))
+prob.true
+```
+
+* (d): Number of unique orderings of 7 values
+(permutations and no repetition is allowed)
+
+```{r, echo = FALSE}
+sim.draws = sapply(1:100000, function(i){
+  one.draw = sample(values,7,replace = F)
+  one.order = paste(one.draw,collapse = "")
+  return(one.order)
+})
+uni.orderings = length(unique(sim.draws))
+uni.orderings
+```
+
+*******
+
+#Code Appendix
+
+```
+ErinsFitbit <- read.csv("~/CollegeHW/STA 32/HW 1/ErinsFitbit.csv")
+
+
+## Problem I
+
+* (a): Number of days where the total steps were > 10,000
+
+num.days = length(ErinsFitbit$Day[ErinsFitbit$Steps > 10000])
+num.days
+
+* (b): Average number of steps taken when total sleep was < 7 hours
+
+num.steps = length(ErinsFitbit$Steps[ErinsFitbit$Sleep < 7])
+sum.steps = sum(ErinsFitbit$Steps[ErinsFitbit$Sleep < 7])
+avg.steps = sum.steps/num.steps
+avg.steps
+
+* (c): Number of days where the total distance walked was > 5 miles
+
+num.days = length(ErinsFitbit$Day[ErinsFitbit$Miles > 5])
+num.days
+
+* (d): Average number of miles where sleep was > 8 hours
+
+num.miles = length(ErinsFitbit$Miles[ErinsFitbit$Sleep > 8])
+sum.miles = sum(ErinsFitbit$Miles[ErinsFitbit$Sleep > 8])
+avg.miles = sum.miles/num.miles
+avg.miles
+
+## Problem II
+
+* (a): Standard Deviation for vector X = 1:100 (of Miles)
+
+calc.sd = function(i){
+  X = ErinsFitbit$Miles
+  Xbar = mean(X)
+  s = sd(X)
+  vector = (X - Xbar)/c(1,100)*s
+  std = sd(vector)
+  return(std)
+}
+calc.sd(1:10)
+
+
+* (b): Lower and upper boundaries of the vector X = 1:100
+
+lower:
+
+# find lower boundary
+find.lower = function(i){
+  X = ErinsFitbit$Miles
+  Xbar = mean(X)
+  s = sd(X)
+  lower.bound = Xbar-2*s
+  return(lower.bound)
+}
+find.lower(1:100)
+
+  upper:  
+find.upper= function(i){
+  X = ErinsFitbit$Miles
+  Xbar = mean(X)
+  s = sd(X)
+  upper.bound = Xbar+2*s
+  return(upper.bound)
+}
+find.upper(1:100)
+
+* (c): Trimmed mean (after removing observations more than 3 standard deviations from the mean)
+
+calc.mean = function(i){
+  X = ErinsFitbit$Miles
+  Xbar = mean(X)
+  s = sd(X)
+  trimmed.mean = mean(X, trim = 3*s)  # remove certain elements from vector 
+   return(trimmed.mean)
+}
+calc.mean(c(1:100,200,300))
+
+## Problem III
+
+* (a): Probability of flipping a head (based on 20 flips)
+
+
+sim.heads = sample(c(1,0),20, replace = TRUE)
+head.prob = sum(sim.heads == 1)/length(sim.heads)
+head.prob
+
+* (b): Probabilities for n = 10,100,1000, 10000, 100000
+
+
+Probability of flipping a head for n = 10 simulations:
+sim10 = sapply(1:10, function(n){
+  sim.heads = sample(c(1,0),n, replace = TRUE)
+  prob.head = sum(sim.heads == 1)/length(sim.heads)
+  return(prob.head)
+})
+prob10 = sum(sim10)/10
+prob10
+
+Probability of flipping a head for n = 100 simulations:
+
+sim100 = sapply(1:100, function(n){
+  sim.heads = sample(c(1,0),n, replace = TRUE)
+  prob.head = sum(sim.heads == 1)/length(sim.heads)
+  return(prob.head)
+})
+prob100 = sum(sim100)/100
+prob100
+
+Probability of flipping a head for n = 1000 simulations:
+
+sim1000 = sapply(1:1000, function(n){
+  sim.heads = sample(c(1,0),n, replace = TRUE)
+  prob.head = sum(sim.heads == 1)/length(sim.heads)
+  return(prob.head)
+})
+prob1000 = sum(sim1000)/1000
+prob1000
+
+Probability of flipping a head for n = 10000 simulations:
+
+sim10000 = sapply(1:10000, function(n){
+  sim.heads = sample(c(1,0),n, replace = TRUE)
+  prob.head = sum(sim.heads == 1)/length(sim.heads)
+  return(prob.head)
+})
+prob10000 = sum(sim10000)/10000
+prob10000
+
+Probability of flipping a head for n = 100000 simulations:
+
+sim100000 = sapply(1:100000, function(n){
+  sim.heads = sample(c(1,0),n, replace = TRUE)
+  prob.head = sum(sim.heads == 1)/length(sim.heads)
+  return(prob.head)
+})
+prob100000 = sum(sim100000)/100000
+prob100000
+
+* (c): Calculated error of coin flip simulation done in part (c)
+
+Error for 10 simulations:
+
+error10 = abs(prob10-0.50)
+error10
+
+Error for 100 simulations:
+
+error100 = abs(prob100-0.50)
+error100
+
+Error for 1000 simulations:
+
+error1000 = abs(prob1000-0.50)
+error1000
+
+Error for 10000 simulations:
+
+error10000 = abs(prob10000-0.50)
+error10000
+
+Error for 100000 simulations:
+
+error100000 = abs(prob100000-0.50)
+error100000
+
+* (d): 
+As n increases, the error appears to decrease because the difference between the statistic and the parameter decreases. The result of performing the same experiment on a large number of times yields results that are closer to the expected value, thus lowering the error.
+
+
+## Problem IV
+
+
+values = as.character(1:7)
+
+* (a): Draw from a vector with 7 values (without replacement)
+
+
+one.draw = sample(values,7,replace = F)
+one.draw
+
+* (b): Number of orderings beginning with '1' in 100000 simulations 
+
+sim.draws = sapply(1:100000, function(i){
+  one.draw = sample(values,7,replace = F)
+  num.1starts = ifelse(one.draw[1] == "1", TRUE, FALSE)
+  return(num.1starts)  
+})
+num.orderings = sum(sim.draws == "TRUE")
+num.orderings
+
+
+* (c): Probability that a random ordering started with a 3 and ended with a 7
+
+
+sim.draws = sapply(1:100000, function(i){
+  one.draw = sample(values,7,replace = F)
+  num.orderings = ifelse(one.draw[1] == "3" & one.draw[7] == "7", TRUE, FALSE)
+  return(num.orderings)  
+})
+prob.true = sum(sim.draws == "TRUE")/(length (sim.draws))
+prob.true
+
+
+* (d): Number of unique orderings of 7 values
+(permutations and no repetition is allowed)
+
+
+sim.draws = sapply(1:100000, function(i){
+  one.draw = sample(values,7,replace = F)
+  one.order = paste(one.draw,collapse = "")
+  return(one.order)
+})
+uni.orderings = length(unique(sim.draws))
+uni.orderings
+
+```

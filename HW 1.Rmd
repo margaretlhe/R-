@@ -1,0 +1,232 @@
+---
+title: "R-HW1"
+author: "Margaret He"
+output: html_document
+---
+```{r,echo = FALSE}
+ErinsFitbit <- read.csv("~/CollegeHW/STA 32/HW 1/ErinsFitbit.csv")
+```
+## Problem I 
+* (a): Names of the columns 
+```{r, echo=FALSE}
+names(ErinsFitbit)
+```
+
+* (b): Number of rows
+```{r, echo=FALSE}
+nrow(ErinsFitbit)
+```
+
+* (c): Results from using the summary function
+```{r, echo=FALSE}
+summary(ErinsFitbit)
+```
+This function shows the frequency of each category for categorical data and presents the statistical summary for numerical data.
+ 
+* (d): Mean of the column "Steps""
+```{r, echo=FALSE}
+mean(ErinsFitbit$Steps)
+```
+
+## Problem II
+(Data for every day of the week)
+
+* (a): Average steps 
+```{r, echo=FALSE}
+avg.steps = aggregate(Steps ~ Day,data = ErinsFitbit,mean)
+avg.steps
+```
+
+* (b): Average hours of sleep  
+```{r, echo=FALSE}
+avg.sleep = aggregate(Sleep ~ Day,data = ErinsFitbit, mean)
+avg.sleep
+```
+
+* (c): Standard deviation of steps taken 
+```{r, echo=FALSE}
+sd.steps = aggregate(Steps ~ Day, data = ErinsFitbit, sd)
+sd.steps
+```
+
+* (d): Standard deviation of hours of sleep 
+```{r, echo=FALSE}
+sd.sleep = aggregate(Sleep ~ Day, data = ErinsFitbit, sd)
+sd.sleep
+```
+
+## Problem III
+* (a): Results from using the fivenum function
+```{r, echo=FALSE}
+fivenum(ErinsFitbit$Miles)
+```
+The fivenum function returns the minimum, the first quartile, the median, the third quartile, and the maximum.
+
+* (b): Results from using the function table
+```{r, echo=FALSE}
+table(ErinsFitbit$Day)
+```
+The table function returns a frequency table 
+
+* (c): Median number of hours of sleep for every month
+```{r, echo=FALSE}
+median.sleep = aggregate(Sleep ~ Month,data = ErinsFitbit,median)
+
+median.sleep
+```
+
+* (d): Median distance traveled for every month
+```{r, echo=FALSE}
+median.distance = aggregate(Miles ~ Month,data=ErinsFitbit,median)
+
+median.distance
+```
+
+## Problem IV 
+* (a): Boxplot of the total number of steps for every day of the week
+
+It appears that Sundays involve less activity than the other days.
+```{r, echo=FALSE,fig.height= 7}
+par(mfrow=c(1,1))
+boxplot(Steps ~ Day,data = ErinsFitbit, main = "Steps per Day")
+```
+
+* (b): Boxplot of the total hours of sleep for every day of the week
+
+It appears that Mondays are less restful than the other days.
+```{r, echo=FALSE,fig.height= 7}
+par(mfrow=c(1,1))
+boxplot(Sleep ~ Day,data = ErinsFitbit, main = "Sleep per Day")
+```
+
+
+* (c): Based on the boxplot in part (a), there DOES appear to be outliers for Steps
+```{r, echo=FALSE}
+Q3 = quantile(ErinsFitbit$Steps,c(0.75))
+Q1 = quantile(ErinsFitbit$Steps,c(0.25))
+
+lower.bound = Q3 - 1.5*(Q3-Q1)
+upper.bound =  Q1 + 1.5*(Q3-Q1)
+any(ErinsFitbit$Steps < lower.bound |ErinsFitbit$Steps > upper.bound)
+```
+We have verified that the outliers occur on Wednesday, Saturday, and Sunday.
+
+* (d): Based on the boxplot in part (b), there DOES appear to be outliers for Sleep 
+```{r, echo=FALSE}
+Q1 = quantile(ErinsFitbit$Sleep,c(0.25))
+Q3 = quantile(ErinsFitbit$Sleep,c(0.75))
+lower.bound = Q1 - 1.5*(Q3-Q1)
+upper.bound = Q3 + 1.5*(Q3-Q1)
+any(ErinsFitbit$Sleep < lower.bound | ErinsFitbit$Sleep > upper.bound)
+```
+We have verified that the outliers occur on Sunday, Monday, Thursday, Friday, and Saturday. 
+
+*******
+
+#Code Appendix
+
+```
+## Problem I 
+* (a): Names of the columns 
+
+names(ErinsFitbit)
+
+* (b): Number of rows
+
+nrow(ErinsFitbit)
+
+* (c): Results from using the summary function
+
+summary(ErinsFitbit)
+
+This function shows the frequency of each category for categorical data and presents the statistical summary for numerical data.
+ 
+* (d): Mean of the column "Steps""
+
+mean(ErinsFitbit$Steps)
+
+## Problem II
+(Data for every day of the week)
+
+* (a): Average steps 
+
+avg.steps = aggregate(Steps ~ Day,data = ErinsFitbit,mean)
+avg.steps
+
+* (b): Average hours of sleep  
+
+avg.sleep = aggregate(Sleep ~ Day,data = ErinsFitbit, mean)
+avg.sleep
+
+* (c): Standard deviation of steps taken 
+
+sd.steps = aggregate(Steps ~ Day, data = ErinsFitbit, sd)
+sd.steps
+
+* (d): Standard deviation of hours of sleep 
+
+sd.sleep = aggregate(Sleep ~ Day, data = ErinsFitbit, sd)
+sd.sleep
+
+## Problem III
+* (a): Results from using the fivenum function
+
+fivenum(ErinsFitbit$Miles)
+
+The fivenum function returns the minimum, the first quartile, the median, the third quartile, and the maximum.
+
+* (b): Results from using the function table
+
+table(ErinsFitbit$Day)
+
+The table function returns a frequency table 
+
+* (c): Median number of hours of sleep for every month
+
+median.sleep = aggregate(Sleep ~ Month,data = ErinsFitbit,median)
+
+median.sleep
+
+* (d): Median distance traveled for every month
+
+median.distance = aggregate(Miles ~ Month,data=ErinsFitbit,median)
+
+median.distance
+
+## Problem IV 
+* (a): Boxplot of the total number of steps for every day of the week
+
+It appears that Sundays involve less activity than the other days.
+
+par(mfrow=c(1,1))
+boxplot(Steps ~ Day,data = ErinsFitbit, main = "Steps per Day")
+
+* (b): Boxplot of the total hours of sleep for every day of the week
+
+It appears that Mondays are less restful than the other days.
+
+par(mfrow=c(1,1))
+boxplot(Sleep ~ Day,data = ErinsFitbit, main = "Sleep per Day")
+
+* (c): Based on the boxplot in part (a), there DOES appear to be outliers for Steps
+
+Q3 = quantile(ErinsFitbit$Steps,c(0.75))
+Q1 = quantile(ErinsFitbit$Steps,c(0.25))
+
+lower.bound = Q3 - 1.5*(Q3-Q1)
+upper.bound =  Q1 + 1.5*(Q3-Q1)
+any(ErinsFitbit$Steps < lower.bound |ErinsFitbit$Steps > upper.bound)
+
+We have verified that the outliers occur on Wednesday, Saturday, and Sunday.
+
+* (d): Based on the boxplot in part (b), there DOES appear to be outliers for Sleep 
+
+Q1 = quantile(ErinsFitbit$Sleep,c(0.25))
+Q3 = quantile(ErinsFitbit$Sleep,c(0.75))
+lower.bound = Q1 - 1.5*(Q3-Q1)
+upper.bound = Q3 + 1.5*(Q3-Q1)
+any(ErinsFitbit$Sleep < lower.bound | ErinsFitbit$Sleep > upper.bound)
+
+We have verified that the outliers occur on Sunday, Monday, Thursday, Friday, and Saturday.
+
+```

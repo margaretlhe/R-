@@ -1,0 +1,377 @@
+---
+title: "R-HW5"
+author: "Margaret He"
+date: "May 13, 2016"
+output: html_document
+---
+
+
+##Problem I
+* (a): Days it took up to and including the first rainy day
+```{r, echo = FALSE}
+current.weather = sample(c("R","NR"),1,prob = c(1/10,9/10))
+num.days = 1
+while(current.weather != "R"){
+  current.weather = sample(c("R","NR"),1,prob = c(1/10,9/10))
+  num.days = num.days+1
+}
+num.days
+```
+
+* (b):
+```{r, echo = FALSE}
+all.rainy = sapply (1:20000, function(i){
+  current.weather = sample(c("R","NR"),1,prob = c(1/10,9/10))
+num.days = 1
+while(current.weather != "R"){
+  current.weather = sample(c("R","NR"),1,prob = c(1/10,9/10))
+  num.days = num.days+1
+}
+return(num.days)
+})
+hist(all.rainy,main = "Days until first Rain", xlab = "Number of days")
+```
+
+* (c):
+```{r, echo = FALSE}
+the.med = round(median(all.rainy),digits = 4)
+```
+
+The median is `r the.med`.
+
+* (d):
+```{r, echo = FALSE}
+mean = round(mean(all.rainy),digits = 4)
+sd= round(sd(all.rainy),digits = 4)
+```
+
+The mean is `r mean`.
+The standard deviation is `r sd`.
+
+* (e):
+```{r,echo = FALSE}
+prob = round(mean(all.rainy <=10 & all.rainy >= 5),digits = 4)
+```
+The estimated probability is `r prob`
+
+
+
+
+##Problem II
+* (a):
+```{r, echo = FALSE}
+current.person = sample(c("G","NG"),1, prob = c(0.40,0.60))
+person.count = sum(current.person == "G")
+num = 1
+while(person.count !=4){
+  current.person = sample(c("G","NG"),1, prob = c(0.40,0.60))
+  person.count = person.count + sum(current.person == "G")
+  num = num + 1
+}
+num
+```
+
+* (b):
+```{r, echo = FALSE}
+glasses = sapply(1:50000,function(i){
+  current.person = sample(c("G","NG"),1, prob = c(0.40,0.60))
+  person.count = sum(current.person == "G")
+  num = 1
+  while(person.count !=4){
+    current.person = sample(c("G","NG"),1, prob = c(0.40,0.60))
+    person.count = person.count + sum(current.person == "G")
+    num = num + 1
+  }
+  return(num)
+})
+hist(glasses,main = "People until 5 Near Sighted", xlab = "Number of People")
+```
+
+* (c):
+```{r, echo = FALSE}
+the.med = round(median(glasses),digits = 4)
+```
+
+The median number of poeople it took until 5 were near sigthed was: `r the.med`.
+
+* (d):
+```{r, echo = FALSE}
+le.mean = round(mean(glasses),digits = 4)
+le.sd = round(sd(glasses),digits = 4)
+```
+
+The mean number of people it took until 5 near sighted is: `r le.mean`.
+The standard deviation of the number of people it took until 5 nearsighted is: `r le.sd`.
+
+* (e):
+```{r,echo = FALSE}
+prob = round(mean(glasses > 10),digits = 4)
+```
+
+The estimated probability that it took more than 10 people before 5 were found is: `r prob`.
+
+
+
+##Problem III
+
+* (a):
+```{r, echo = FALSE}
+X = rnorm(1000, mean = 2, sd = 1)
+Y = rnorm(1000, mean = -2, sd = 5)
+X.mean = round(mean(X),digits = 4)
+X.sd = round(sd(X),digits = 4)
+Y.mean = round(mean(Y),digits = 4)
+Y.sd = round(sd(Y),digits = 4)
+```
+
+Vector X with mean `r X.mean` and standard deviation `r X.sd`.
+Vector Y with mean `r Y.mean` and standard deviation `r Y.sd`.
+
+* (b):
+```{r, echo = FALSE}
+X = rnorm(1000, mean = 2, sd = 1)
+Y = rnorm(1000, mean = -2, sd = 5)
+W = X + Y
+W.mean = round(mean(W),digits = 4)
+W.sd = round(sd(W),digits = 4)
+```
+
+Vector W with mean `r W.mean` and standard deviation `r W.sd`.
+
+* (c):
+```{r, echo = FALSE}
+prob.w = round(mean(W > 3),digits = 4)
+```
+
+The probability the mean is larger than 3: `r prob.w`.
+
+* (d):
+```{r, echo = FALSE}
+X = rnorm(1000, mean = 2, sd = 1)
+Y = rnorm(1000, mean = -2, sd = 5)
+W = X + Y
+W.mean = round(mean(W),digits = 4)
+W.sd = round(sd(W),digits = 4)
+prob.w = round(mean(W > 3),digits = 4)
+
+Error.mean =W.mean-0
+Error.sd=	 W.sd - 3.60555127546
+Error.prob =   prob.w - 1.17669681083
+
+```
+
+*******
+
+#Code Appendix
+  
+```
+##Problem I
+* (a): # of sampled cards up to and including the first Ace
+
+numcards = 1
+currentcard = sample(c("A","NA"),1,prob = c(4/52,48/52))
+while(currentcard != "A"){
+  currentcard = sample(c("A","NA"),1,prob = c(4/52,48/52))
+  numcards = numcards+1
+}
+numcards
+
+* (b): Histogram of the simulation of part a) done 50,000 times
+
+aces = sapply(1:50000,function(i){
+  currentcard = sample(c("A","NA"),1,prob = c(4/52,48/52))
+  numcards = 1
+  while(currentcard != "A"){
+    currentcard = sample(c("A","NA"),1,prob = c(4/52,48/52))
+    numcards = numcards+1
+  }
+  return(numcards)
+})
+
+hist(aces,main = "# of Cards until first Ace", xlab = "Number of cards")
+
+
+* (c): Median of the vector from part b)
+
+med = median(aces)
+
+* (d): Mean (top) and Std Dev. of Vector (bottom)
+
+
+mean = mean(aces)
+mean
+std.dev = sd(aces)
+std.dev
+
+
+* (e): Probability that someone draws an ace for the first time between the 10th and 16th try (inclusive)
+
+prob.first = mean(aces <=16 & aces >= 10)
+prob.first
+
+
+
+##Problem II
+* (a): Number of components selected until 4 pass the test
+
+component = sample(c("P","F"),1, prob = c(0.90,0.10))
+passed = sum(component == "P")
+numpicked = 1
+while(passed !=4){
+  component = sample(c("P","F"),1, prob = c(0.90,0.10))
+  passed = passed + sum(component == "P")
+  numpicked = numpicked + 1
+}
+numpicked
+
+
+* (b): Histogram of simultation of part a) done 50,000 times
+
+simulation = sapply(1:50000,function(i){
+  component = sample(c("P","F"),1, prob = c(0.90,0.10))
+  passcount = sum(component == "P")
+  numpicked = 1
+  while(passcount !=4){
+    component = sample(c("P","F"),1, prob = c(0.90,0.10))
+    passcount = passcount + sum(component == "P")
+    numpicked = numpicked + 1
+  }
+  return(numpicked)
+})
+hist(simulation,main = "Components until 4 pass", xlab = "Number of Components")
+
+
+
+* (c): Median of the vector from part b)
+
+med = median(simulation)
+med
+
+
+* (d): Mean (top) and Std. Dev of Vector(bottom)
+
+mean = mean(simulation) 
+mean
+std.dev = sd(simulation)
+std.dev
+
+
+* (e): Probability that > 6 components were selected before 4 passed the test
+
+prob.g6 = mean(simulation > 6)
+prob.g6
+
+
+
+##Problem III
+
+* Create a function that takes in values a, b, x, direct
+
+func = function(a,b,x,direct){
+  if(direct == "<="){
+    result = punif(x,a,b,lower.tail= TRUE)
+  }else if(direct == "<"){
+    result = punif(x,a,b,lower.tail= TRUE)
+  }else if(direct == ">="){
+    result = punif(x,a,b,lower.tail = FALSE)
+  }else if(direct == ">"){
+    result = punif(x,a,b,lower.tail= FALSE)
+  }else{
+    print("missing direct parameter")
+  }
+}
+
+
+* (a): P(X > 25.5)
+
+a = 0 
+b = 100
+x = 25.5
+direct = ">"
+prob = func(a,b,x,direct)
+prob
+
+
+* (b): P(X < 2.2)
+
+a = 2
+b = 10
+x = 2.2 
+direct = "<"
+prob = func(a,b,x,direct)
+prob
+
+* (c):
+
+a = 1000
+b = 25000
+x = 5500
+direct = "<="
+prob = func(a,b,x,direct)
+prob
+
+
+* (d):
+
+a = -24
+b = -10
+x = -12
+direct = ">="
+prob = func(a,b,x,direct)
+prob
+
+
+##Problem IV
+* First generate the population
+the.pop = rnorm(1000000)
+true.var = 1
+
+
+* (a): S^2(A) (top) and S^2(B) (bottom)
+
+sample20 = sample(the.pop,20,replace=  FALSE)
+estimateA = var(sample20)
+estimateB = sum((sample20-mean(sample20))^2)/length(sample20)
+errorA = true.var - estimateA
+errorA
+errorB = true.var - estimateB
+errorB
+
+
+* (b): Histograms of each of the 1000 simulated errors for both S^2(A) and S^2(B)
+
+errors = sapply(1:1000,function(i){
+  sim.samp = sample(the.pop,20,replace=  FALSE)
+  estimateA = var(sim.samp)
+  estimateB = sum((sim.samp- mean(sim.samp))^2)/length(sim.samp)
+  errorA = true.var - estimateA  
+  errorB = true.var - estimateB
+  return(c(errorA,errorB))
+})
+par(mfrow = c(1,2))
+hist(errors[1,],main = "Error for s^2_A",xlab = "error")
+hist(errors[2,],main = "Error for s^2_B",xlab = "error")
+
+
+
+* (c): Mean (top) and Std. Dev (bottom) for S^2(A) 
+
+
+eA.mean = mean(errors[1,])
+eA.mean
+eA.sd = round(sd(errors[1,]),digits = 6)
+eA.sd
+
+
+*     Mean (top) and Std. Dev (bottom) for S^2(B)
+
+eB.mean = mean(errors[2,])
+eB.mean
+eB.sd = sd(errors[2,])
+eB.sd
+
+
+* (d): Better estimator:
+By looking at the graphs, I believe that implementing the continuity correction for a binomial random variable is important. Without the correction, the average error was 0.0345. However, with the correction, the average error was greatly reduced to 0.00004776.
+
+```

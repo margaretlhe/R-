@@ -1,0 +1,239 @@
+---
+title: "R HW6"
+author: "Margaret He"
+date: "May 27, 2016"
+output: html_document
+---
+
+##Problem I
+
+```{r, echo = FALSE}
+mu = 5
+normal.pop = rnorm(1000000, mean=5, sd=10)
+
+# check whether the true mean falls within the CI
+prob.within = function(n, p){
+  sample = normal.pop[sample(length(normal.pop), n, replace = FALSE)]
+  sig = sd(sample)
+  error = (qnorm(0.975)*(sig/sqrt(n)))
+  #error <- qt(0.975, df=n-1)*sig/sqrt(n)
+  LB = mu - error
+  UB = mu + error
+  check = (p <= UB & p >= LB) #returns true or false
+  return(check)
+}
+
+```
+
+* (a): Whether the true mean falls within the 95% confidence interval for a sample size of 15
+
+```{r, echo = FALSE}
+prob.within(15, 0.95)
+
+```
+* (b): Result of checking 10,000 times whether the true mean falls within the 95% confidence interval
+
+```{r, echo = FALSE}
+sims <- replicate(10000, prob.within(15, 0.95))
+table(c(sims))
+
+```
+
+* (c): Coverage probability of simulations from part b)
+
+```{r, echo = FALSE}
+sims <- replicate(10000, prob.within(15, 0.95))
+cover.prob = (sum(sims))/ 10000
+cover.prob
+
+```
+
+* (d): This confidence interval did not have at least a 95% coverage probability.
+
+
+##Problem II
+
+```{r, echo = FALSE}
+mu = 5
+exp.pop = rexp(1000000, 1/mu)
+
+# check whether the true mean falls within the CI
+prob.within2 = function(n, p){
+  sample = exp.pop[sample(length(exp.pop), n, replace = FALSE)]
+  sig = sd(sample)
+  error = (qnorm(0.975)*(sig/sqrt(n)))
+  LB = mu - error
+  UB = mu + error
+  check = (p <= UB & p >= LB) #returns true or false
+  return(check)
+}
+
+```
+
+* (a): Whether the true mean falls within the 95% confidence interval for a sample size of 15
+
+```{r, echo = FALSE}
+prob.within2(15, .95)
+
+```
+
+* (b): Result of checking 10,000 times whether the true mean falls within the 95% confidence interval
+
+```{r, echo = FALSE}
+sims <- replicate(10000, prob.within2(15, 0.95))
+table(c(sims))
+
+```
+
+* (c): Coverage probability of simulations from part b)
+
+```{r, echo = FALSE}
+sims <- replicate(10000, prob.within2(15, 0.95))
+cover.prob = (sum(sims))/ 10000
+cover.prob
+
+```
+
+* (d): The results show that the confidence interval does not have at least a 95% coverage probability because the true mean falls within the 95% confidence interval less than 95% of the time.
+
+
+##Problem III
+
+* (a): Whether the true mean falls within the 95% confidence interval for a sample size of 60
+
+```{r, echo = FALSE}
+prob.within2(60, 0.95)
+
+```
+
+* (b): Result of checking 10,000 times whether the true mean falls within the 95% confidence interval
+
+```{r, echo = FALSE}
+sims <- replicate(10000, prob.within2(60, 0.95))
+table(c(sims))
+
+```
+
+* (c): Coverage probability of simulations from part b)
+
+```{r, echo = FALSE}
+sims <- replicate(10000, prob.within2(60, 0.95))
+cover.prob = (sum(sims))/ 10000
+cover.prob
+
+```
+
+* (d): The data shows that the confidence interval does not have at least a 95% coverage probability because the true mean falls within the 95% confidence interval less than 95% of the time.
+
+  
+*******
+
+#Code Appendix
+  
+```
+##Problem I
+
+mu = 5
+normal.pop = rnorm(1000000, mean=5, sd=10)
+
+# check whether the true mean falls within the CI
+prob.within = function(n, p){
+  sample = normal.pop[sample(length(normal.pop), n, replace = FALSE)]
+  sig = sd(sample)
+  error = (qnorm(0.975)*(sig/sqrt(n)))
+  #error <- qt(0.975, df=n-1)*sig/sqrt(n)
+  LB = mu - error
+  UB = mu + error
+  check = (p <= UB & p >= LB) #returns true or false
+  return(check)
+}
+
+
+* (a): Whether the true mean falls within the 95% confidence interval for a sample size of 15
+
+
+prob.within(15, 0.95)
+
+* (b): Result of checking 10,000 times whether the true mean falls within the 95% confidence interval
+
+
+sims <- replicate(10000, prob.within(15, 0.95))
+table(c(sims))
+
+
+* (c): Coverage probability of simulations from part b)
+
+
+sims <- replicate(10000, prob.within(15, 0.95))
+cover.prob = (sum(sims))/ 10000
+cover.prob
+
+
+* (d): This confidence interval did not have at least a 95% coverage probability.
+
+
+##Problem II
+
+mu = 5
+exp.pop = rexp(1000000, 1/mu)
+
+# check whether the true mean falls within the CI
+prob.within2 = function(n, p){
+  sample = exp.pop[sample(length(exp.pop), n, replace = FALSE)]
+  sig = sd(sample)
+  error = (qnorm(0.975)*(sig/sqrt(n)))
+  LB = mu - error
+  UB = mu + error
+  check = (p <= UB & p >= LB) #returns true or false
+  return(check)
+}
+
+
+* (a): Whether the true mean falls within the 95% confidence interval for a sample size of 15
+
+prob.within2(15, .95)
+
+
+* (b): Result of checking 10,000 times whether the true mean falls within the 95% confidence interval
+
+
+sims <- replicate(10000, prob.within2(15, 0.95))
+table(c(sims))
+
+
+* (c): Coverage probability of simulations from part b)
+
+
+sims <- replicate(10000, prob.within2(15, 0.95))
+cover.prob = (sum(sims))/ 10000
+cover.prob
+
+
+* (d): The results show that the confidence interval does not have at least a 95% coverage probability because the true mean falls within the 95% confidence interval less than 95% of the time.
+
+
+##Problem III
+
+* (a): Whether the true mean falls within the 95% confidence interval for a sample size of 60
+
+
+prob.within2(60, 0.95)
+
+
+* (b): Result of checking 10,000 times whether the true mean falls within the 95% confidence interval
+
+sims <- replicate(10000, prob.within2(60, 0.95))
+table(c(sims))
+
+
+* (c): Coverage probability of simulations from part b)
+
+
+sims <- replicate(10000, prob.within2(60, 0.95))
+cover.prob = (sum(sims))/ 10000
+cover.prob
+
+
+* (d): The data shows that the confidence interval does not have at least a 95% coverage probability because the true mean falls within the 95% confidence interval less than 95% of the time.
+
+```
